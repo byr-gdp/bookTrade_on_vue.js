@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>二手书</title>
+  <!-- 新 Bootstrap 核心 CSS 文件 -->
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <!-- 可选的Bootstrap主题文件（一般不用引入） -->
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+  <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+  <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+  <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+  <script src="http://cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <!-- 二手书字体 -->
+  <link href='http://www.youziku.com/webfont/CSS/9d6cb45390a49a658f956d3cd7ffd49a' rel='stylesheet' type='text/css'/>
+  <!-- <link href='http://www.youziku.com/webfont/CSS/9aeaea1e0466f686874670af5b418a03' rel='stylesheet' type='text/css'/> -->
+  <style>
+  *{
+    padding: 0px;
+    margin: 0px;
+  }
+  ul{
+    text-decoration: none;
+    margin: 0px;
+    padding: 0px;
+  }
+  li{
+    list-style: none;
+  }
+  .name{
+    font-size: 32px;
+    font-weight: bolder;
+    /*font-family: 'Apple LiSung Light', 'Apple LiGothic Medium','Microsoft YaHei', 'Microsoft JhengHei';*/
+  }
+  .price{
+    font-size: 16px;
+    font-weight: normal;
+  }
+  .academy{
+    font-size: 16px;
+    font-weight: normal;
+  }
+  .desc{
+    font-size: 16px;
+    font-weight: normal;
+    height: 22px;
+    line-height: 22px;
+    font-style: italic;
+  }
+  .seller{
+    font-size: 20px;
+    font-weight: normal;
+  }
+  .info{
+    font-size: 16px;
+    font-weight: normal;
+  }
+  .tel{
+    font-size: 20px;
+    font-weight: bolder;
+  }
+  .qq{
+    font-size: 20px;
+    font-weight: bolder;
+  }
+  .releasetime{
+    font-size: 12px;
+    font-weight: normal;
+  }
+  div.fix.affix{  top:30px; }
+  .input-group{
+    width: 260px;
+  }
+  /*.affix-bottom{ position:absolute;}*/
+  </style>
+</head>
+<body data-spy="scroll" data-target="#left">
+<div id="app">  
+  <div id="header">
+    <div id="header_left">
+      <div class="logo" style="position: relative; left: 5%; margin-top: 10px">
+        <a href="#"  data-container="body" data-toggle="popover" data-placement="right" data-content="Hi 欢迎来到”二手书“，在这里你可以发布二手书信息 "><img src="./img/logo.png" class="img-circle" style="width: 64px; height: 64px;" ></a>
+           <span style="position: absolute; right: 10%; top: 10%; font-size:36px;" class="css9d6cb45390a49a658f956d3cd7ffd49a">二手书</span>
+      </div>
+      <div class="tooltips">
+
+      </div>
+    </div>
+    <div id="header_right">
+     <!--  <div class="dialog2" style="position: absolute; right: 16%; margin-top:20px">
+        <div data-container="body" data-toggle="popover" data-placement="top" 
+      data-content="以下是当前所有的二手书信息，你可以通过左边的搜索、排序功能来更迅速的找到你所需要的信息，以及发布新的二手书信息。希望能给你生活带来一丝变化  :)">
+        </div>
+      </div> -->
+    </div>
+  </div>
+  <hr>
+  <div id="main" class="container">
+    <div class="row">
+      <div id="left" class="col-sm-6 col-lg-3">
+        <!-- 搜索排序、添加新书 -->
+        <!-- <h3>自定义</h3> -->
+        <div class="fix" data-spy="affix" data-offset-top="100">
+          <div class="function">
+            <div class="search input-group">
+              <span class="input-group-addon">搜索</span>
+              <input type="text" class="form-control" placeholder="请输入关键词" v-model="searchKey">
+            </div>
+            <!-- <br> -->
+         <!--    <div class="sort input-group">
+              <span class="input-group-addon">排序</span>
+              <select name="sort" class="form-control" v-model="sortKey">
+                <option value="time">按发布时间由近到远</option>
+                <option value="price" disabled>按价格由低到高</option>
+              </select>
+            </div> -->
+          </div>
+         
+          <hr>
+
+          <div class="new" >
+            <h4>发布二手书</h4>
+            <form v-on="submit:addBook">
+              <div class="input-group">
+                <span class="input-group-addon">书名</span>
+                <input type="text" class="form-control" v-model="newBook.name | nameValidator" value="book">
+              </div>
+              <br> 
+              <div class="input-group">
+                <span class="input-group-addon">描述</span>
+                <input type="textarea" class="form-control" v-model="newBook.desc | descValidator" value="desc">
+              </div>
+              <br>
+              <div class="input-group">
+                <span class="input-group-addon">价格</span>
+                <input type="number" class="form-control" v-model="newBook.price | priceValidator" value="1">
+              </div>
+              <br>
+              <div class="input-group">
+                <span class="input-group-addon">姓名</span>
+                <input type="text" class="form-control" v-model="newBook.seller | sellerValidator" value="gdp">
+              </div>
+              <br>
+              <div class="input-group">
+                <span class="input-group-addon">电话</span>
+                <input type="tel" class="form-control" v-model="newBook.tel | telValidator" value="15652915090">
+              </div>
+              <br>
+              <div class="input-group">
+                <span class="input-group-addon">Q Q</span>
+                <input type="text" class="form-control" v-model="newBook.qq | qqValidator" value="598710717">
+              </div>
+              <br>
+              <div class="input-group">
+                <span class="input-group-addon">学院</span>
+                <input type="text" class="form-control" v-model="newBook.academy | academyValidator" value="xintong">
+              </div>
+              <!-- <input type="hidden" v-model="newBook.id" value="0"> -->
+              <input type="hidden" v-model="newBook.time" value="0">
+              <br>
+              <input type="submit" value="提交" class="btn btn-success btn-block addBook">
+            </form>
+          </div>
+        </div>
+      </div>
+      <div id="right" class="col-sm-6 col-lg-9">
+        <!-- 提交新书成功提示 -->
+       <!--  <div id="alert-success" class="alert alert-success fade" style="display: hidden">
+         <a href="#" class="close" data-dismiss="alert">&times;</a>
+         <strong>提交成功！</strong>
+        </div> -->
+    <!--     <div id="myAlert" class="alert alert-warning">
+          <a href="#" class="close" data-dismiss="alert">&times;</a>
+          <strong>信息有误</strong>
+        </div> -->
+        <div id="alert-success" class="alert alert-success" v-show="checkSuccess"><!-- <a href="#" class="close" data-dismiss="alert">&times;</a> --><strong>成功！</strong>您的二手书信息已被实时更新到下表</div>
+        <div id="alert-warning" class="alert alert-danger" v-show="checkFailed"><strong>失败！</strong>所填信息有误</div>
+
+        <!-- 二手书详情 v－repeat -->
+        <ul>
+          <li class="book" v-repeat="books | filterBy searchKey | orderBy sortKey true">
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                <div class="panel-title">
+                  图书详情
+                </div>
+              </div>
+              <div class="panel-body">
+                  <!-- <ul class="list-group"> -->
+                    <!-- <li class="list-group-item"> -->
+                      <span class="name">{{name}}<span>&nbsp&nbsp
+                      <span class="price">{{price}}元</span>&nbsp&nbsp
+                      <span class="academy ">{{academy}}</span>
+                    <!-- </li>
+                    <li class="list-group-item"> -->
+                      <br>
+                      <p class="desc cssa621510346ad32cc2931490b03611b8a">{{desc}}</p>                    
+                    <!-- </li>
+                    <li class="list-group-item"> -->
+                      <span class="seller">{{seller}}</span>&nbsp&nbsp
+                      <span class="info">TEL&nbsp</span><span class="info tel">{{tel}}</span>&nbsp&nbsp
+                      <span class="info">QQ&nbsp</span><span class="qq">{{qq}}</span>
+                      <!-- <img src="" class="avatar"> -->
+                    <!-- </li> -->
+                  <!-- </ul> -->
+                 <!--  <span class="text-muted">发布于 {{Math.ceil(($root.current-time)/60000)}} 分钟前 </span> -->
+                  <br>
+                  <span class="text-muted releasetime">发布于 {{Math.ceil(($root.current-time)/60000)}} 分钟前&nbsp&nbsp&nbsp{{releasetime}}</span>
+              </div>
+            </div>
+          </li>
+        </ul> 
+      </div>
+    </div>
+  </div>
+</div>
+  <script src='firebase.js'></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/0.11.10/vue.min.js"></script>
+  <script src="js.js"></script>
+  <script>
+  $(document).ready(function(){
+    // $('.addBook').click(function () {
+      // if($root.check){
+        // 清除之前未被消除的tooltips  
+        // $('.close').parent().removeClass('in').fadeOut('slow'); // hides alert with Bootstrap CSS3 implementation
+        // var element = '<div id="alert-success" class="alert alert-success fade"><a href="#" class="close" data-dismiss="alert">&times;</a><strong>提交成功！</strong></div>'
+
+        // $('#right').prepend(element)
+        // $('#alert-success').addClass('in').delay(6000).remove()
+      //   $("#alert-success").slideDown('slow').delay(2000).slideUp('slow');
+      // }
+      // else{
+      //   $("#alert-danger").slideDown('slow').delay(2000).slideUp('slow');
+      // }
+    //});
+
+    //关闭 tooltips 提示
+    // $('.close').click(function () {
+    //   // $(this).parent().removeClass('in').fadeOut('slow'); // hides alert with Bootstrap CSS3 implementation
+    //   $(this).parent().slideUp('slow');
+    // });
+
+    // $('.new').affix({
+    // offset: {
+    //   top: 175
+    //   ,bottom: 100
+    // }
+    // });
+
+//  <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'>
+
+
+  })
+  $(function () 
+      { 
+        $("[data-toggle='popover']").popover('show');
+      });
+  </script>
+</body>
+</html>
